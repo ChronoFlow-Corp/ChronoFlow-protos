@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+package metrics;
+
+option go_package="github.com/ChronoFlow-Corp/ChronoFlow-protos/gen/go;metricsv1;";
+
+service Metrics {
+  rpc Rps(stream RpsRequest) returns (RpsResponse);
+  rpc ResponseTime (stream ResponseTimeRequest) returns (stream ResponseTimeResponse);
+  rpc AddRegister (AddRegistrationRequest) returns (AddRegistrationResponse);
+  rpc FilesOnUser (stream FilesOnUserRequest) returns (stream FilesOnUserResponse);
+  rpc ActiveUsers (stream ActiveUsersRequest) returns (stream ActiveUsersResponse);
+  rpc AddInternal (AddInternalRequest) returns (AddInternalResponse);
+}
+
+message RpsRequest{}
+
+message RpsResponse {
+  int64 rps = 1;
+}
+
+message ResponseTimeRequest {
+  repeated requestTimeType responses = 1;
+}
+
+message ResponseTimeResponse {}
+message requestTimeType {
+  google.protobuf.Duration time = 1;
+  string route = 2;
+}
+
+message AddRegistrationRequest {
+  google.protobuf.Timestamp registration_time = 2;
+}
+
+message AddRegistrationResponse {}
+
+message FilesOnUserRequest {
+  int64 files = 1;
+}
+
+message FilesOnUserResponse {}
+
+message ActiveUsersRequest {
+  int64 active_users = 1;
+}
+
+message ActiveUsersResponse {}
+
+message AddInternalRequest {
+  google.protobuf.Timestamp internal_time = 1;
+  string internal_route = 2;
+  string internal_message = 3;
+}
+
+message AddInternalResponse {}
