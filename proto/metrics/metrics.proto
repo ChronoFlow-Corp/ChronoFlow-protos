@@ -16,10 +16,11 @@ service Metrics {
   rpc AddInternal (AddInternalRequest) returns (AddInternalResponse);
 }
 
-message RpsRequest{}
+message RpsRequest{
+  int64 rps = 1;
+}
 
 message RpsResponse {
-  int64 rps = 1;
 }
 
 message ResponseTimeRequest {
