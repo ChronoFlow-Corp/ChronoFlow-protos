@@ -18,50 +18,50 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// MetricsClient is the client API for Metrics service.
+// MetricsServiceClient is the client API for MetricsService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type MetricsClient interface {
-	Rps(ctx context.Context, opts ...grpc.CallOption) (Metrics_RpsClient, error)
-	ResponseTime(ctx context.Context, opts ...grpc.CallOption) (Metrics_ResponseTimeClient, error)
+type MetricsServiceClient interface {
+	Rps(ctx context.Context, opts ...grpc.CallOption) (MetricsService_RpsClient, error)
+	ResponseTime(ctx context.Context, opts ...grpc.CallOption) (MetricsService_ResponseTimeClient, error)
 	AddRegister(ctx context.Context, in *AddRegistrationRequest, opts ...grpc.CallOption) (*AddRegistrationResponse, error)
-	FilesOnUser(ctx context.Context, opts ...grpc.CallOption) (Metrics_FilesOnUserClient, error)
-	ActiveUsers(ctx context.Context, opts ...grpc.CallOption) (Metrics_ActiveUsersClient, error)
+	FilesOnUser(ctx context.Context, opts ...grpc.CallOption) (MetricsService_FilesOnUserClient, error)
+	ActiveUsers(ctx context.Context, opts ...grpc.CallOption) (MetricsService_ActiveUsersClient, error)
 	AddInternal(ctx context.Context, in *AddInternalRequest, opts ...grpc.CallOption) (*AddInternalResponse, error)
 }
 
-type metricsClient struct {
+type metricsServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewMetricsClient(cc grpc.ClientConnInterface) MetricsClient {
-	return &metricsClient{cc}
+func NewMetricsServiceClient(cc grpc.ClientConnInterface) MetricsServiceClient {
+	return &metricsServiceClient{cc}
 }
 
-func (c *metricsClient) Rps(ctx context.Context, opts ...grpc.CallOption) (Metrics_RpsClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Metrics_ServiceDesc.Streams[0], "/metrics.Metrics/Rps", opts...)
+func (c *metricsServiceClient) Rps(ctx context.Context, opts ...grpc.CallOption) (MetricsService_RpsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &MetricsService_ServiceDesc.Streams[0], "/metrics.MetricsService/Rps", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &metricsRpsClient{stream}
+	x := &metricsServiceRpsClient{stream}
 	return x, nil
 }
 
-type Metrics_RpsClient interface {
+type MetricsService_RpsClient interface {
 	Send(*RpsRequest) error
 	CloseAndRecv() (*RpsResponse, error)
 	grpc.ClientStream
 }
 
-type metricsRpsClient struct {
+type metricsServiceRpsClient struct {
 	grpc.ClientStream
 }
 
-func (x *metricsRpsClient) Send(m *RpsRequest) error {
+func (x *metricsServiceRpsClient) Send(m *RpsRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *metricsRpsClient) CloseAndRecv() (*RpsResponse, error) {
+func (x *metricsServiceRpsClient) CloseAndRecv() (*RpsResponse, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
@@ -72,30 +72,30 @@ func (x *metricsRpsClient) CloseAndRecv() (*RpsResponse, error) {
 	return m, nil
 }
 
-func (c *metricsClient) ResponseTime(ctx context.Context, opts ...grpc.CallOption) (Metrics_ResponseTimeClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Metrics_ServiceDesc.Streams[1], "/metrics.Metrics/ResponseTime", opts...)
+func (c *metricsServiceClient) ResponseTime(ctx context.Context, opts ...grpc.CallOption) (MetricsService_ResponseTimeClient, error) {
+	stream, err := c.cc.NewStream(ctx, &MetricsService_ServiceDesc.Streams[1], "/metrics.MetricsService/ResponseTime", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &metricsResponseTimeClient{stream}
+	x := &metricsServiceResponseTimeClient{stream}
 	return x, nil
 }
 
-type Metrics_ResponseTimeClient interface {
+type MetricsService_ResponseTimeClient interface {
 	Send(*ResponseTimeRequest) error
 	Recv() (*ResponseTimeResponse, error)
 	grpc.ClientStream
 }
 
-type metricsResponseTimeClient struct {
+type metricsServiceResponseTimeClient struct {
 	grpc.ClientStream
 }
 
-func (x *metricsResponseTimeClient) Send(m *ResponseTimeRequest) error {
+func (x *metricsServiceResponseTimeClient) Send(m *ResponseTimeRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *metricsResponseTimeClient) Recv() (*ResponseTimeResponse, error) {
+func (x *metricsServiceResponseTimeClient) Recv() (*ResponseTimeResponse, error) {
 	m := new(ResponseTimeResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -103,39 +103,39 @@ func (x *metricsResponseTimeClient) Recv() (*ResponseTimeResponse, error) {
 	return m, nil
 }
 
-func (c *metricsClient) AddRegister(ctx context.Context, in *AddRegistrationRequest, opts ...grpc.CallOption) (*AddRegistrationResponse, error) {
+func (c *metricsServiceClient) AddRegister(ctx context.Context, in *AddRegistrationRequest, opts ...grpc.CallOption) (*AddRegistrationResponse, error) {
 	out := new(AddRegistrationResponse)
-	err := c.cc.Invoke(ctx, "/metrics.Metrics/AddRegister", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/metrics.MetricsService/AddRegister", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *metricsClient) FilesOnUser(ctx context.Context, opts ...grpc.CallOption) (Metrics_FilesOnUserClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Metrics_ServiceDesc.Streams[2], "/metrics.Metrics/FilesOnUser", opts...)
+func (c *metricsServiceClient) FilesOnUser(ctx context.Context, opts ...grpc.CallOption) (MetricsService_FilesOnUserClient, error) {
+	stream, err := c.cc.NewStream(ctx, &MetricsService_ServiceDesc.Streams[2], "/metrics.MetricsService/FilesOnUser", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &metricsFilesOnUserClient{stream}
+	x := &metricsServiceFilesOnUserClient{stream}
 	return x, nil
 }
 
-type Metrics_FilesOnUserClient interface {
+type MetricsService_FilesOnUserClient interface {
 	Send(*FilesOnUserRequest) error
 	Recv() (*FilesOnUserResponse, error)
 	grpc.ClientStream
 }
 
-type metricsFilesOnUserClient struct {
+type metricsServiceFilesOnUserClient struct {
 	grpc.ClientStream
 }
 
-func (x *metricsFilesOnUserClient) Send(m *FilesOnUserRequest) error {
+func (x *metricsServiceFilesOnUserClient) Send(m *FilesOnUserRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *metricsFilesOnUserClient) Recv() (*FilesOnUserResponse, error) {
+func (x *metricsServiceFilesOnUserClient) Recv() (*FilesOnUserResponse, error) {
 	m := new(FilesOnUserResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -143,30 +143,30 @@ func (x *metricsFilesOnUserClient) Recv() (*FilesOnUserResponse, error) {
 	return m, nil
 }
 
-func (c *metricsClient) ActiveUsers(ctx context.Context, opts ...grpc.CallOption) (Metrics_ActiveUsersClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Metrics_ServiceDesc.Streams[3], "/metrics.Metrics/ActiveUsers", opts...)
+func (c *metricsServiceClient) ActiveUsers(ctx context.Context, opts ...grpc.CallOption) (MetricsService_ActiveUsersClient, error) {
+	stream, err := c.cc.NewStream(ctx, &MetricsService_ServiceDesc.Streams[3], "/metrics.MetricsService/ActiveUsers", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &metricsActiveUsersClient{stream}
+	x := &metricsServiceActiveUsersClient{stream}
 	return x, nil
 }
 
-type Metrics_ActiveUsersClient interface {
+type MetricsService_ActiveUsersClient interface {
 	Send(*ActiveUsersRequest) error
 	Recv() (*ActiveUsersResponse, error)
 	grpc.ClientStream
 }
 
-type metricsActiveUsersClient struct {
+type metricsServiceActiveUsersClient struct {
 	grpc.ClientStream
 }
 
-func (x *metricsActiveUsersClient) Send(m *ActiveUsersRequest) error {
+func (x *metricsServiceActiveUsersClient) Send(m *ActiveUsersRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *metricsActiveUsersClient) Recv() (*ActiveUsersResponse, error) {
+func (x *metricsServiceActiveUsersClient) Recv() (*ActiveUsersResponse, error) {
 	m := new(ActiveUsersResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -174,82 +174,82 @@ func (x *metricsActiveUsersClient) Recv() (*ActiveUsersResponse, error) {
 	return m, nil
 }
 
-func (c *metricsClient) AddInternal(ctx context.Context, in *AddInternalRequest, opts ...grpc.CallOption) (*AddInternalResponse, error) {
+func (c *metricsServiceClient) AddInternal(ctx context.Context, in *AddInternalRequest, opts ...grpc.CallOption) (*AddInternalResponse, error) {
 	out := new(AddInternalResponse)
-	err := c.cc.Invoke(ctx, "/metrics.Metrics/AddInternal", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/metrics.MetricsService/AddInternal", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// MetricsServer is the server API for Metrics service.
-// All implementations must embed UnimplementedMetricsServer
+// MetricsServiceServer is the server API for MetricsService service.
+// All implementations must embed UnimplementedMetricsServiceServer
 // for forward compatibility
-type MetricsServer interface {
-	Rps(Metrics_RpsServer) error
-	ResponseTime(Metrics_ResponseTimeServer) error
+type MetricsServiceServer interface {
+	Rps(MetricsService_RpsServer) error
+	ResponseTime(MetricsService_ResponseTimeServer) error
 	AddRegister(context.Context, *AddRegistrationRequest) (*AddRegistrationResponse, error)
-	FilesOnUser(Metrics_FilesOnUserServer) error
-	ActiveUsers(Metrics_ActiveUsersServer) error
+	FilesOnUser(MetricsService_FilesOnUserServer) error
+	ActiveUsers(MetricsService_ActiveUsersServer) error
 	AddInternal(context.Context, *AddInternalRequest) (*AddInternalResponse, error)
-	mustEmbedUnimplementedMetricsServer()
+	mustEmbedUnimplementedMetricsServiceServer()
 }
 
-// UnimplementedMetricsServer must be embedded to have forward compatible implementations.
-type UnimplementedMetricsServer struct {
+// UnimplementedMetricsServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedMetricsServiceServer struct {
 }
 
-func (UnimplementedMetricsServer) Rps(Metrics_RpsServer) error {
+func (UnimplementedMetricsServiceServer) Rps(MetricsService_RpsServer) error {
 	return status.Errorf(codes.Unimplemented, "method Rps not implemented")
 }
-func (UnimplementedMetricsServer) ResponseTime(Metrics_ResponseTimeServer) error {
+func (UnimplementedMetricsServiceServer) ResponseTime(MetricsService_ResponseTimeServer) error {
 	return status.Errorf(codes.Unimplemented, "method ResponseTime not implemented")
 }
-func (UnimplementedMetricsServer) AddRegister(context.Context, *AddRegistrationRequest) (*AddRegistrationResponse, error) {
+func (UnimplementedMetricsServiceServer) AddRegister(context.Context, *AddRegistrationRequest) (*AddRegistrationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddRegister not implemented")
 }
-func (UnimplementedMetricsServer) FilesOnUser(Metrics_FilesOnUserServer) error {
+func (UnimplementedMetricsServiceServer) FilesOnUser(MetricsService_FilesOnUserServer) error {
 	return status.Errorf(codes.Unimplemented, "method FilesOnUser not implemented")
 }
-func (UnimplementedMetricsServer) ActiveUsers(Metrics_ActiveUsersServer) error {
+func (UnimplementedMetricsServiceServer) ActiveUsers(MetricsService_ActiveUsersServer) error {
 	return status.Errorf(codes.Unimplemented, "method ActiveUsers not implemented")
 }
-func (UnimplementedMetricsServer) AddInternal(context.Context, *AddInternalRequest) (*AddInternalResponse, error) {
+func (UnimplementedMetricsServiceServer) AddInternal(context.Context, *AddInternalRequest) (*AddInternalResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddInternal not implemented")
 }
-func (UnimplementedMetricsServer) mustEmbedUnimplementedMetricsServer() {}
+func (UnimplementedMetricsServiceServer) mustEmbedUnimplementedMetricsServiceServer() {}
 
-// UnsafeMetricsServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to MetricsServer will
+// UnsafeMetricsServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to MetricsServiceServer will
 // result in compilation errors.
-type UnsafeMetricsServer interface {
-	mustEmbedUnimplementedMetricsServer()
+type UnsafeMetricsServiceServer interface {
+	mustEmbedUnimplementedMetricsServiceServer()
 }
 
-func RegisterMetricsServer(s grpc.ServiceRegistrar, srv MetricsServer) {
-	s.RegisterService(&Metrics_ServiceDesc, srv)
+func RegisterMetricsServiceServer(s grpc.ServiceRegistrar, srv MetricsServiceServer) {
+	s.RegisterService(&MetricsService_ServiceDesc, srv)
 }
 
-func _Metrics_Rps_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(MetricsServer).Rps(&metricsRpsServer{stream})
+func _MetricsService_Rps_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(MetricsServiceServer).Rps(&metricsServiceRpsServer{stream})
 }
 
-type Metrics_RpsServer interface {
+type MetricsService_RpsServer interface {
 	SendAndClose(*RpsResponse) error
 	Recv() (*RpsRequest, error)
 	grpc.ServerStream
 }
 
-type metricsRpsServer struct {
+type metricsServiceRpsServer struct {
 	grpc.ServerStream
 }
 
-func (x *metricsRpsServer) SendAndClose(m *RpsResponse) error {
+func (x *metricsServiceRpsServer) SendAndClose(m *RpsResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *metricsRpsServer) Recv() (*RpsRequest, error) {
+func (x *metricsServiceRpsServer) Recv() (*RpsRequest, error) {
 	m := new(RpsRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -257,25 +257,25 @@ func (x *metricsRpsServer) Recv() (*RpsRequest, error) {
 	return m, nil
 }
 
-func _Metrics_ResponseTime_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(MetricsServer).ResponseTime(&metricsResponseTimeServer{stream})
+func _MetricsService_ResponseTime_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(MetricsServiceServer).ResponseTime(&metricsServiceResponseTimeServer{stream})
 }
 
-type Metrics_ResponseTimeServer interface {
+type MetricsService_ResponseTimeServer interface {
 	Send(*ResponseTimeResponse) error
 	Recv() (*ResponseTimeRequest, error)
 	grpc.ServerStream
 }
 
-type metricsResponseTimeServer struct {
+type metricsServiceResponseTimeServer struct {
 	grpc.ServerStream
 }
 
-func (x *metricsResponseTimeServer) Send(m *ResponseTimeResponse) error {
+func (x *metricsServiceResponseTimeServer) Send(m *ResponseTimeResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *metricsResponseTimeServer) Recv() (*ResponseTimeRequest, error) {
+func (x *metricsServiceResponseTimeServer) Recv() (*ResponseTimeRequest, error) {
 	m := new(ResponseTimeRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -283,43 +283,43 @@ func (x *metricsResponseTimeServer) Recv() (*ResponseTimeRequest, error) {
 	return m, nil
 }
 
-func _Metrics_AddRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _MetricsService_AddRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AddRegistrationRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MetricsServer).AddRegister(ctx, in)
+		return srv.(MetricsServiceServer).AddRegister(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/metrics.Metrics/AddRegister",
+		FullMethod: "/metrics.MetricsService/AddRegister",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MetricsServer).AddRegister(ctx, req.(*AddRegistrationRequest))
+		return srv.(MetricsServiceServer).AddRegister(ctx, req.(*AddRegistrationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Metrics_FilesOnUser_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(MetricsServer).FilesOnUser(&metricsFilesOnUserServer{stream})
+func _MetricsService_FilesOnUser_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(MetricsServiceServer).FilesOnUser(&metricsServiceFilesOnUserServer{stream})
 }
 
-type Metrics_FilesOnUserServer interface {
+type MetricsService_FilesOnUserServer interface {
 	Send(*FilesOnUserResponse) error
 	Recv() (*FilesOnUserRequest, error)
 	grpc.ServerStream
 }
 
-type metricsFilesOnUserServer struct {
+type metricsServiceFilesOnUserServer struct {
 	grpc.ServerStream
 }
 
-func (x *metricsFilesOnUserServer) Send(m *FilesOnUserResponse) error {
+func (x *metricsServiceFilesOnUserServer) Send(m *FilesOnUserResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *metricsFilesOnUserServer) Recv() (*FilesOnUserRequest, error) {
+func (x *metricsServiceFilesOnUserServer) Recv() (*FilesOnUserRequest, error) {
 	m := new(FilesOnUserRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -327,25 +327,25 @@ func (x *metricsFilesOnUserServer) Recv() (*FilesOnUserRequest, error) {
 	return m, nil
 }
 
-func _Metrics_ActiveUsers_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(MetricsServer).ActiveUsers(&metricsActiveUsersServer{stream})
+func _MetricsService_ActiveUsers_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(MetricsServiceServer).ActiveUsers(&metricsServiceActiveUsersServer{stream})
 }
 
-type Metrics_ActiveUsersServer interface {
+type MetricsService_ActiveUsersServer interface {
 	Send(*ActiveUsersResponse) error
 	Recv() (*ActiveUsersRequest, error)
 	grpc.ServerStream
 }
 
-type metricsActiveUsersServer struct {
+type metricsServiceActiveUsersServer struct {
 	grpc.ServerStream
 }
 
-func (x *metricsActiveUsersServer) Send(m *ActiveUsersResponse) error {
+func (x *metricsServiceActiveUsersServer) Send(m *ActiveUsersResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *metricsActiveUsersServer) Recv() (*ActiveUsersRequest, error) {
+func (x *metricsServiceActiveUsersServer) Recv() (*ActiveUsersRequest, error) {
 	m := new(ActiveUsersRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -353,61 +353,61 @@ func (x *metricsActiveUsersServer) Recv() (*ActiveUsersRequest, error) {
 	return m, nil
 }
 
-func _Metrics_AddInternal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _MetricsService_AddInternal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AddInternalRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MetricsServer).AddInternal(ctx, in)
+		return srv.(MetricsServiceServer).AddInternal(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/metrics.Metrics/AddInternal",
+		FullMethod: "/metrics.MetricsService/AddInternal",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MetricsServer).AddInternal(ctx, req.(*AddInternalRequest))
+		return srv.(MetricsServiceServer).AddInternal(ctx, req.(*AddInternalRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Metrics_ServiceDesc is the grpc.ServiceDesc for Metrics service.
+// MetricsService_ServiceDesc is the grpc.ServiceDesc for MetricsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Metrics_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "metrics.Metrics",
-	HandlerType: (*MetricsServer)(nil),
+var MetricsService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "metrics.MetricsService",
+	HandlerType: (*MetricsServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "AddRegister",
-			Handler:    _Metrics_AddRegister_Handler,
+			Handler:    _MetricsService_AddRegister_Handler,
 		},
 		{
 			MethodName: "AddInternal",
-			Handler:    _Metrics_AddInternal_Handler,
+			Handler:    _MetricsService_AddInternal_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "Rps",
-			Handler:       _Metrics_Rps_Handler,
+			Handler:       _MetricsService_Rps_Handler,
 			ClientStreams: true,
 		},
 		{
 			StreamName:    "ResponseTime",
-			Handler:       _Metrics_ResponseTime_Handler,
+			Handler:       _MetricsService_ResponseTime_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},
 		{
 			StreamName:    "FilesOnUser",
-			Handler:       _Metrics_FilesOnUser_Handler,
+			Handler:       _MetricsService_FilesOnUser_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},
 		{
 			StreamName:    "ActiveUsers",
-			Handler:       _Metrics_ActiveUsers_Handler,
+			Handler:       _MetricsService_ActiveUsers_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},

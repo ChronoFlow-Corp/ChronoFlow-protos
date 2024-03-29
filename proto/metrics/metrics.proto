@@ -1,34 +1,37 @@
 syntax = "proto3";
 
+package metrics;
+
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
-package metrics;
+option go_package = "github.com/ChronoFlow-Corp/ChronoFlow-protos/gen/go;metricsv1;";
 
-option go_package="github.com/ChronoFlow-Corp/ChronoFlow-protos/gen/go;metricsv1;";
-
-service Metrics {
+service MetricsService {
   rpc Rps(stream RpsRequest) returns (RpsResponse);
-  rpc ResponseTime (stream ResponseTimeRequest) returns (stream ResponseTimeResponse);
-  rpc AddRegister (AddRegistrationRequest) returns (AddRegistrationResponse);
-  rpc FilesOnUser (stream FilesOnUserRequest) returns (stream FilesOnUserResponse);
-  rpc ActiveUsers (stream ActiveUsersRequest) returns (stream ActiveUsersResponse);
-  rpc AddInternal (AddInternalRequest) returns (AddInternalResponse);
+  rpc ResponseTime(stream ResponseTimeRequest) returns (stream ResponseTimeResponse);
+  rpc AddRegister(AddRegistrationRequest) returns (AddRegistrationResponse);
+  rpc FilesOnUser(stream FilesOnUserRequest) returns (stream FilesOnUserResponse);
+  rpc ActiveUsers(stream ActiveUsersRequest) returns (stream ActiveUsersResponse);
+  rpc AddInternal(AddInternalRequest) returns (AddInternalResponse);
 }
 
-message RpsRequest{
+message RpsRequest {
   int64 rps = 1;
 }
 
 message RpsResponse {
+  bool close = 1;
 }
 
 message ResponseTimeRequest {
-  repeated requestTimeType responses = 1;
+  repeated RequestTimeType responses = 1;
 }
 
-message ResponseTimeResponse {}
-message requestTimeType {
+message ResponseTimeResponse {
+  bool close = 1;
+}
+message RequestTimeType {
   google.protobuf.Duration time = 1;
   string route = 2;
 }
@@ -43,13 +46,17 @@ message FilesOnUserRequest {
   int64 files = 1;
 }
 
-message FilesOnUserResponse {}
+message FilesOnUserResponse {
+  bool close = 1;
+}
 
 message ActiveUsersRequest {
   int64 active_users = 1;
 }
 
-message ActiveUsersResponse {}
+message ActiveUsersResponse {
+  bool close = 1;
+}
 
 message AddInternalRequest {
   google.protobuf.Timestamp internal_time = 1;
